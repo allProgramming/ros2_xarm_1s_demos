@@ -1,0 +1,23 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: xarm_1s_description
+    relative_path: urdf/xarm_1s.urdf.xacro
+  srdf:
+    relative_path: config/xarm_1s.srdf
+  package_settings:
+    author_name: Alan Olsen
+    author_email: alandeanolsen@gmail.com
+    generated_timestamp: 1686598410
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position

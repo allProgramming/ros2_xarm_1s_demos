@@ -1,0 +1,11 @@
+sensors:
+  - default_sensor
+default_sensor:
+  filtered_cloud_topic: /filtered_cloud
+  max_range: 4.0
+  max_update_rate: 1.0
+  padding_offset: 0.0
+  padding_scale: 1.0
+  point_cloud_topic: /micro_ros_arduino_node_publisher2
+  point_subsample: 1
+  sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater

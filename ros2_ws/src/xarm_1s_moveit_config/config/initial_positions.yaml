@@ -1,0 +1,9 @@
+# Default initial positions for xarm_1s's ros2_control fake system
+
+initial_positions:
+  arm1: 0
+  arm2: 0
+  arm3: 0
+  arm4: 0
+  arm5: 0
+  arm6: 0
