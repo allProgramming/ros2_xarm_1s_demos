@@ -92,11 +92,13 @@ hardware_interface::CallbackReturn XArm1SSystemHardware::on_deactivate(
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-int XArm1SSystemHardware::servo_id_from_name_(std::string name) {
+int XArm1SSystemHardware::servo_id_from_name_(std::string name)
+{
   return (name.back() - '1') + 1;
 }
 
-std::string XArm1SSystemHardware::servo_name_from_id_(int id) {
+std::string XArm1SSystemHardware::servo_name_from_id_(int id)
+{
   return "arm" + std::to_string(id);
 }
 
@@ -105,66 +107,69 @@ hardware_interface::return_type XArm1SSystemHardware::read(
 {
   char c;
   uint8_t servo_count = hw_states_.size();
+
+  // Prepare message to request servo positions
   LibSerial::DataBuffer msg_out = {
     0x55, 0x55,
     (uint8_t)(servo_count + 3),  // Message Length
     21,                          // Command
     servo_count,                 // Count
   };
-  for (auto i = 0; i < servo_count; i++) {
+  for (auto i = 0; i < servo_count; i++)
     msg_out.push_back(servo_id_from_name_(info_.joints[i].name));
-  }
   const int BUFFER_SIZE = 3 * servo_count;
   LibSerial::DataBuffer response(BUFFER_SIZE);
 
-  while (serial_port_.IsDataAvailable()) {
+  // Clear any potentially lingering, orphaned messages from the arm
+  while (serial_port_.IsDataAvailable())
     serial_port_.ReadByte(c);
-  }
-  std::string so(msg_out.begin(), msg_out.end());
+
+  // Send message to the arm
   serial_port_.Write(msg_out);
+
+  // Expect specific header in return
   serial_port_.ReadByte(c);
-  if (c != 0x55) {
+  if (c != 0x55)
     return hardware_interface::return_type::OK;
-  }
   serial_port_.ReadByte(c);
-  if (c != 0x55) {
+  if (c != 0x55)
     return hardware_interface::return_type::OK;
-  }
   serial_port_.ReadByte(c);
-  if (c != (uint8_t)(servo_count * 3 + 3)) {
+  if (c != (uint8_t)(servo_count * 3 + 3))
     return hardware_interface::return_type::OK;
-  }
   serial_port_.ReadByte(c);
-  if (c != 21) {
+  if (c != 21)
     return hardware_interface::return_type::OK;
-  }
   serial_port_.ReadByte(c);
-  if (c != servo_count) {
+  if (c != servo_count)
     return hardware_interface::return_type::OK;
-  }
   serial_port_.Read(response, BUFFER_SIZE);
-  std::string sr(response.begin(), response.end());
-  for (auto i = 0; i < servo_count; i++) {
-    auto servoName = servo_name_from_id_(response[i*3+0]);
+
+  // Read servo positions
+  for (auto i = 0; i < servo_count; i++)
+  {
+    auto servo_name = servo_name_from_id_(response[i*3+0]);
     int servo_index = -1;
-    for (int ii = 0; ii < (int)info_.joints.size(); ii++) {
-      if (info_.joints[ii].name.compare(servoName) == 0) {
+    for (int ii = 0; ii < (int)info_.joints.size(); ii++)
+    {
+      if (info_.joints[ii].name.compare(servo_name) == 0)
+      {
         servo_index = ii;
         break;
       }
     }
-    if (servo_index == -1) { // Should never happen
+    if (servo_index == -1) // Should never happen
       continue;
-    }
+
     double units = (response[i*3+2] << 8) + response[i*3+1];
     double radians = 0.0;
-    if (servoName.compare("arm1") == 0) {
+    if (servo_name.compare("arm1") == 0)
       radians = ((kGripperUnitsRange - (units - kGripperUnitsMin)) / kGripperUnitsRange) * kGripperUnitsPerRadian;
-    } else if (servoName.compare("arm3") == 0 || servoName.compare("arm5") == 0) {
+    else if (servo_name.compare("arm3") == 0 || servo_name.compare("arm5") == 0)
       radians = ((kServoUnitsMax - units) - kServoUnitsMiddle) * kServoUnitsPerRadian;
-    } else {
+    else
       radians = (units - kServoUnitsMiddle) * kServoUnitsPerRadian;
-    }
+
     hw_states_[servo_index] = radians;
   }
 
@@ -174,18 +179,17 @@ hardware_interface::return_type XArm1SSystemHardware::read(
 hardware_interface::return_type XArm1SSystemHardware::write(
   const rclcpp::Time& /* time */, const rclcpp::Duration& /* period */)
 {
-  bool has_new_commands = false;
-  for (int i = 0; i < 6; i++) {
-    if (hw_commands_[i] != prev_hw_commands_[i]) {
-      has_new_commands = true;
-    }
-  }
-  if (!has_new_commands) {
-    return hardware_interface::return_type::OK;
-  }
-
   uint8_t servo_count = hw_commands_.size();
 
+  // If commands are the same as before, don't send message to arm
+  bool has_new_commands = false;
+  for (int i = 0; i < servo_count; i++)
+    if (hw_commands_[i] != prev_hw_commands_[i])
+      has_new_commands = true;
+  if (!has_new_commands)
+    return hardware_interface::return_type::OK;
+
+  // Prepare message
   LibSerial::DataBuffer msg_out = {
     0x55, 0x55,
     (uint8_t)(servo_count * 3 + 5),  // Message Length
@@ -194,28 +198,30 @@ hardware_interface::return_type XArm1SSystemHardware::write(
     0xF4,                            // Time (LSB)
     0x01,                            // Time (MSB)
   };
-  for (uint8_t servo_index = 0; servo_index < servo_count; servo_index++) {
-    auto servoName = info_.joints[servo_index].name;
+  for (uint8_t servo_index = 0; servo_index < servo_count; servo_index++)
+  {
+    auto servo_name = info_.joints[servo_index].name;
 
     double radians = hw_commands_[servo_index];
     double units = 0.0;
-    if (servoName.compare("arm1") == 0) {
+    if (servo_name.compare("arm1") == 0)
       units = kGripperUnitsMin + (kGripperUnitsRange - ((radians / kGripperUnitsPerRadian) * kGripperUnitsRange));
-    } else if (servoName.compare("arm3") == 0 || servoName.compare("arm5") == 0) {
+    else if (servo_name.compare("arm3") == 0 || servo_name.compare("arm5") == 0)
       units = (kServoUnitsMax - ((radians / kServoUnitsPerRadian) + kServoUnitsMiddle));
-    } else {
+    else
       units = (radians / kServoUnitsPerRadian) + kServoUnitsMiddle;
-    }
 
-    msg_out.push_back(servo_id_from_name_(servoName));
+    msg_out.push_back(servo_id_from_name_(servo_name));
     msg_out.push_back(((int)units) & 0x00ff);
     msg_out.push_back((((int)units) & 0xff00) >> 8);
   }
 
+  // Send message to arm
   serial_port_.Write(msg_out);
-  for (int i = 0; i < servo_count; i++) {
+
+  // Store commands, to compare against next time
+  for (int i = 0; i < servo_count; i++)
     prev_hw_commands_[i] = hw_commands_[i];
-  }
 
   return hardware_interface::return_type::OK;
 }
