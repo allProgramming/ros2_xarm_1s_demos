@@ -1,5 +1,5 @@
 # ROS2 xArm 1S Demos
-Introduction to ROS2 and robot arms, demonstrated using the Hiwonder xArm 1S.
+Introduction to ROS2 and robot arms, demonstrated using the Hiwonder xArm 1S, paired with a SparkFun VL53L5CX depth sensor.
 
 > **Note**
 > This repo is a work in progress - subscribe / watch / check-in later for updates on instructions and improvements
