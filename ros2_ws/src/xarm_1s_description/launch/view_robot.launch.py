@@ -8,9 +8,9 @@ import os
 def generate_launch_description():
 
     urdf_xacro_path = os.path.join(
-        get_package_share_directory('xarm_1s_description'),
-        'urdf',
-        'xarm_1s.urdf.xacro')
+        get_package_share_directory("xarm_1s_description"),
+        "urdf",
+        "xarm_1s.urdf.xacro")
     robot_description = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
         PathJoinSubstitution([urdf_xacro_path]),
