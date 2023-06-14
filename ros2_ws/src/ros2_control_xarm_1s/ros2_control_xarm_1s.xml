@@ -1,0 +1,9 @@
+<library path="ros2_control_xarm_1s">
+  <class name="ros2_control_xarm_1s/XArm1SSystemHardware"
+         type="ros2_control_xarm_1s::XArm1SSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ros2_control system hardware interface for a Hiwonder xArm 1S
+    </description>
+  </class>
+</library>
