@@ -1,6 +1,9 @@
 # ROS2 xArm 1S Demos
 Introduction to ROS2 and robot arms, demonstrated using the Hiwonder xArm 1S.
 
+> **Note**
+> This repo is a work in progress - subscribe / watch / check-in later for updates on instructions and improvements
+
 ## Materials
 ### Computer
 * MacBook Air M1 laptop (... was used, but modified instructions may work for your computer)
