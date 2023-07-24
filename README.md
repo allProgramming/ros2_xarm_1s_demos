@@ -72,6 +72,17 @@ Essentially follow the manufacturer's videos:
   * Remember to align bracket holes with pilot holes (see GENERAL PRINCIPLE, above)
     * For example, before screwing in to servo 5's assistant horn (time ~0:20) ensure that the bracket's holes align with the horn's pilot holes, even if the bracket isn't perfectly perpendicular to the base (as shown in the video) - after installing those screws appropriately, then straighten the bracket to match the video, and proceed to putting screws in on the "main" servo horn side (time: ~0:28)
   * Don’t push rivets in **all the way** (time: ~3:25) until after the rivet/wire connector is in place (on the other end), otherwise you’ll have to pull the rivets out and start again
+ * **IMPORTANT** (Validation) Once assembled, test the arm using a phone app to validate proper assembly:
+   * With the arm still powered off, and placed on a safe / stable surface, straighten the joints to appear as in the video (i.e. a straight line that is perpendicular to the base, with the gripper pointing towards the ceiling / sky)
+   * Plug in the power adapter, and move the power switch into the "ON" position
+   * Ensure that your phone has bluetooth enabled
+   * Download, install, and open "xarm" from your phone's app store
+   * Select "xArm" ("Easy to control xArm")
+   * Click on the red bluetooth symbol to search for devices
+   * Under "Decice List:" select "xArm"
+   * To put the arm in its "neutral" or "centered" state, tap the red-dot icon
+   * If the arm was assembled successfully, then it should not move much as all
+     * If, after moving into the intended-"neutral" state, any joint is significantly misaligned, remove the appropriate screws from the offending servo horns, move the bracket to its proper place, and reinstall the screws - then, repeat this test to validate / confirm your changes
 
 ## Software Setup
 * Setup Ubuntu 22 VM (Virtual Machine) in UTM, following [these instructions](https://medium.com/geekculture/virtualization-on-apple-mac-m1-4cbfb809bb89), specifically:
