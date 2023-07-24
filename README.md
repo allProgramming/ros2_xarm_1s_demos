@@ -55,11 +55,23 @@ I find it extremely helpful to have parts labeled and understood before assembly
 
 #### Instructions
 Essentially follow the manufacturer's videos:
-* https://www.youtube.com/watch?v=68N5oQAYfEI
-* https://www.youtube.com/watch?v=BhTdgkRTBoE
-* https://www.youtube.com/watch?v=ij0365iMALk
-
-I'll add my notes, here, later.
+* [Video 1 of 3](https://www.youtube.com/watch?v=68N5oQAYfEI) - Notes:
+  * Suction cups (time: ~1:26)
+    * Large washer goes under the plate
+    * Small, “split lock” washer goes above the plate (under the nut)
+    * I used an adjustable wrench to push down / compress a split lock washer (as-needed), and to finish tightening the nut
+  * First servo wire (time: ~3:50)
+    * Ensure that the excess wire / slack between servos 6 and 5 is placed in the most open layer between the two connector ports
+* [Video 2 of 3](https://www.youtube.com/watch?v=BhTdgkRTBoE) - Notes:
+  * **GENERAL PRINCIPLE:** Align holes in bracket with pilot holes in servo / horn before putting in screws (explained at time ~0:19)
+  * Servo 5's screws (time: ~0:30)
+    * The 2nd side, when installing screws, is called the "main servo horn side", but the voice misspoke, it's actually the "assistant" side (still, simply install the screws as shown in the video)
+  * **TIP**: If bracket holes are too small for bolts, don't give up!
+    * Holes on my 2nd small bracket (time: ~1:49) were too small for the bolts to slide in / fit effortlessly, so I had to screw them in using a screwdriver, first, before they where far enough through to put a nut on
+* [Video 3 of 3](https://www.youtube.com/watch?v=ij0365iMALk) - Notes:
+  * Remember to align bracket holes with pilot holes (see GENERAL PRINCIPLE, above)
+    * For example, before screwing in to servo 5's assistant horn (time ~0:20) ensure that the bracket's holes align with the horn's pilot holes, even if the bracket isn't perfectly perpendicular to the base (as shown in the video) - after installing those screws appropriately, then straighten the bracket to match the video, and proceed to putting screws in on the "main" servo horn side (time: ~0:28)
+  * Don’t push rivets in **all the way** (time: ~3:25) until after the rivet/wire connector is in place (on the other end), otherwise you’ll have to pull the rivets out and start again
 
 ## Software Setup
 * Setup Ubuntu 22 VM (Virtual Machine) in UTM, following [these instructions](https://medium.com/geekculture/virtualization-on-apple-mac-m1-4cbfb809bb89), specifically:
